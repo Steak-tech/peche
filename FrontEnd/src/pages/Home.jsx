@@ -56,7 +56,6 @@ export default function Home() {
         </Marker>
         <RecenterMap position={position} />
       </MapContainer>
-      <Nav data={[{name:'Home', icon: IoMdHome}, {name:'Profile', icon: IoAddCircle}, {name:'User', icon: FaUserCircle}]} />
     </div>
   );
 }
