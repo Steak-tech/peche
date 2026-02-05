@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Poisson;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PoissonController extends Controller
 {
@@ -12,15 +13,8 @@ class PoissonController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $poissons = Poisson::all();
+        return response()->json($poissons);
     }
 
     /**
@@ -28,7 +22,15 @@ class PoissonController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'espece' => 'required|string|max:255',
+            'famille' => 'required|string|max:255',
+            'image_url' => 'required|string|max:255',
+        ]);
+
+        $poisson = Poisson::create($validatedData);
+
+        return response()->json($poisson, 201);
     }
 
     /**
@@ -36,15 +38,7 @@ class PoissonController extends Controller
      */
     public function show(Poisson $poisson)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Poisson $poisson)
-    {
-        //
+        return response()->json($poisson);
     }
 
     /**
@@ -52,7 +46,15 @@ class PoissonController extends Controller
      */
     public function update(Request $request, Poisson $poisson)
     {
-        //
+        $validatedData = $request->validate([
+            'espece' => 'sometimes|required|string|max:255',
+            'famille' => 'sometimes|required|string|max:255',
+            'image_url' => 'nullable|url',
+        ]);
+
+        $poisson->update($validatedData);
+
+        return response()->json($poisson);
     }
 
     /**
@@ -60,6 +62,14 @@ class PoissonController extends Controller
      */
     public function destroy(Poisson $poisson)
     {
-        //
+        try {
+            $poisson->delete();
+            return response()->json([
+                'message' => "Le poisson {$poisson->espece} a été supprimé avec succès."
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error("Erreur suppression Poisson ID {$poisson->id} : " . $e->getMessage());
+            return response()->json(['error' => 'Erreur lors de la suppression.'], 500);
+        }
     }
 }
