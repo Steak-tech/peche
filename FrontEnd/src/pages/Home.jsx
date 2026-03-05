@@ -1,11 +1,7 @@
-import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-import Nav from '../components/Nav.jsx';
-import { IoMdHome } from "react-icons/io";
-import { IoAddCircle } from "react-icons/io5";
-import { FaUserCircle } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import { useAuth } from "../context/AuthContext.jsx";
 
 // Hook pour centrer la map sur la position
 function RecenterMap({ position }) {
@@ -17,7 +13,7 @@ function RecenterMap({ position }) {
 }
 
 export default function Home() {
-  const [position, setPosition] = useState([50.4300, 2.7800]); // fallback
+  const [position, setPosition] = useState([50.43, 2.78]); // fallback
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,8 +31,8 @@ export default function Home() {
       {
         enableHighAccuracy: true,
         maximumAge: 10000,
-        timeout: 5000
-      }
+        timeout: 5000,
+      },
     );
 
     return () => navigator.geolocation.clearWatch(watchId); // clean up
@@ -46,7 +42,11 @@ export default function Home() {
 
   return (
     <div>
-      <MapContainer center={position} zoom={13} style={{ height: '100vh', width: '100vw'}}>
+      <MapContainer
+        center={position}
+        zoom={13}
+        style={{ height: "100vh", width: "100vw" }}
+      >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="&copy; OpenStreetMap contributors"

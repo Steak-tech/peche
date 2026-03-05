@@ -5,20 +5,28 @@ import { IoAddCircle } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
 import { Outlet, useNavigate } from "react-router-dom";
 import FishCommonsModal from "./commons/FishCommonsModal";
+import { useAuth } from "../context/AuthContext.jsx";
 
-export default function Layout() {
+export default function Layout({ cookies, removeCookie }) {
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   const navItems = [
     { icon: IoMdHome, url: "/" },
     {
       icon: IoAddCircle,
       action: () => {
-        setOpenModal(true);
+        if (!isAuthenticated) {
+          navigate("/login");
+        } else {
+          setOpenModal(true);
+        }
       },
     },
-    { icon: FaUserCircle, url: "/user" },
+    isAuthenticated
+      ? { icon: FaUserCircle, url: "/dashboard" }
+      : { icon: FaUserCircle, url: "/login" },
   ];
 
   return (
