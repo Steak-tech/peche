@@ -2,23 +2,36 @@ import { useState } from "react";
 import Nav from "./Nav";
 import { IoMdHome, IoMdClose, IoIosArrowForward } from "react-icons/io";
 import { IoAddCircle } from "react-icons/io5";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import { Outlet, useNavigate } from "react-router-dom";
 import FishCommonsModal from "./commons/FishCommonsModal";
 
-export default function Layout() {
+export default function Layout({ cookies, removeCookie }) {
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
+
+  const isConnected = cookies?.auth_data?.token;
+
+  const handleLogout = () => {
+    removeCookie("auth_data", { path: "/" });
+    navigate("/login");
+  };
 
   const navItems = [
     { icon: IoMdHome, url: "/" },
     {
       icon: IoAddCircle,
       action: () => {
-        setOpenModal(true);
+        if (!isConnected) {
+          navigate("/login");
+        } else {
+          setOpenModal(true);
+        }
       },
     },
-    { icon: FaUserCircle, url: "/user" },
+    isConnected
+      ? { icon: FaSignOutAlt, action: handleLogout }
+      : { icon: FaUserCircle, url: "/login" },
   ];
 
   return (

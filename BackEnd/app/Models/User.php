@@ -3,14 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +22,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'username',
+        'departement',
+        'peche_type',
+        'xp',
+        'level',
+        'role',
+        'consent',
+        'notifications'
     ];
 
     /**
@@ -47,9 +56,9 @@ class User extends Authenticatable
     }
 
     public function captures()
-{
-    return $this->hasMany(Capture::class);
-}
+    {
+        return $this->hasMany(Capture::class);
+    }
 
 public function sorties()
 {
