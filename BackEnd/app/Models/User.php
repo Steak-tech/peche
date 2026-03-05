@@ -51,4 +51,9 @@ class User extends Authenticatable
     return $this->hasMany(Capture::class);
 }
 
+public function sorties()
+{
+    return $this->hasMany(Sortie::class);
+}
+
 }

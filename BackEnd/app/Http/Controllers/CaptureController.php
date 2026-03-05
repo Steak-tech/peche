@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Capture;
+use App\Models\Sortie;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CaptureController extends Controller
@@ -27,18 +29,27 @@ class CaptureController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, User $user, Sortie $sortie)
     {
-        //
+        if ($sortie->sortie_status !== 'pending') {
+            return response()->json([
+                'message' => 'Impossible d\'ajouter une capture à une sortie terminée.'
+            ], 403);
+        }
+
+        $capture = $sortie->captures()->create($request->all());
+
+        return response()->json($capture, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Capture $capture)
+    public function show(User $user, Sortie $sortie, Capture $capture)
     {
-        //
-    }
+        return response()->json([
+            'capture' => $capture->load('poisson')
+        ]);    }
 
     /**
      * Show the form for editing the specified resource.

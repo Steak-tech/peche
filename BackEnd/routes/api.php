@@ -1,14 +1,34 @@
 <?php
 
+use App\Http\Controllers\SortieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
+});
 
-Route::apiResource('captures', App\Http\Controllers\CaptureController::class);
+
+Route::apiResource('poissons', App\Http\Controllers\PoissonController::class);
+
+Route::apiResource('users.sorties.captures', App\Http\Controllers\CaptureController::class)
+    ->scoped([
+        'capture' => 'id'
+    ])
+    ->parameters([
+        'captures' => 'capture',
+        'sorties' => 'sortie'
+    ]);
+
+Route::apiResource('users.sorties', SortieController::class)
+    ->scoped([
+        'sortie' => 'id',
+    ])
+    ->parameters([
+        'sorties' => 'sortie'
+    ]);
+
 
 // Route de Login (publique)
 Route::post('/login', function (Request $request) {

@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sorties', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('lieu');
-            $table->timestamps();
+        Schema::table('poissons', function (Blueprint $table) {
+            $table->string('famille')->nullable()->after('espece');
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sorties');
+        Schema::table('poissons', function (Blueprint $table) {
+            $table->dropColumn('famille');
+        });
     }
 };
