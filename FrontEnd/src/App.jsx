@@ -4,7 +4,7 @@ import Home from "./pages/Home.jsx";
 import Layout from "./components/Layout.jsx";
 import Sortie from "./pages/Sortie.jsx";
 import Login from "./pages/auth/Login.jsx";
-// import Register from "./pages/auth/Register.jsx";
+import Register from "./pages/auth/Register.jsx";
 import Dashboard from "./pages/auth/Dashboard.jsx";
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
           <Route path="/sortie" element={<Sortie />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
-          {/* <Route path="/register" element={<Register />} /> */}
+          <Route path="/register" element={<Register />} />
         </Route>
       </Routes>
     </Router>

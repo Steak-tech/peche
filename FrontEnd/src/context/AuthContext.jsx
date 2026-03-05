@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  // Get User Info
   const fetchUser = async () => {
     try {
       const userData = await UserService.getUser();
@@ -29,23 +30,24 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Méthode Login
+
   const login = async (credentials) => {
     try {
       const data = await UserService.login(credentials);
-
-      setCookie("auth_data", JSON.stringify({ token: data.token }), {
-        path: "/",
-      });
-
-      if (data.user) setUser(data.user);
-      else await fetchUser();
-
+      setCookie("auth_data", { token: data.token }, { path: "/" });
+      if (data.user) {
+        setUser(data.user);
+      } else {
+        await fetchUser();
+      }
       return true;
     } catch (error) {
       throw error;
     }
   };
 
+  // Méthode Logout
   const logout = async () => {
     try {
       await UserService.logout();
@@ -57,9 +59,32 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Méthode register
+  const register = async (userData) => {
+    try {
+      const data = await UserService.register(userData);
+      setCookie("auth_data", { token: data.token }, { path: "/" });
+      if (data.user) {
+        setUser(data.user);
+      } else {
+        await fetchUser();
+      }
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, loading, isAuthenticated: !!user }}
+      value={{
+        user,
+        login,
+        logout,
+        register,
+        loading,
+        isAuthenticated: !!user,
+      }}
     >
       {!loading && children}
     </AuthContext.Provider>

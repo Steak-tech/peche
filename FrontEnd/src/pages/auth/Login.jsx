@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import UserService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext.jsx";
 
-export default function Login({ setCookie }) {
+export default function Login() {
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -15,16 +16,7 @@ export default function Login({ setCookie }) {
     setLoading(true);
 
     try {
-      const data = await UserService.login({ email, password });
-
-      setCookie(
-        "auth_data",
-        {
-          username: data.user.username,
-          token: data.token,
-        },
-        { path: "/" },
-      );
+      await login({ email, password });
 
       navigate("/dashboard");
     } catch (err) {
@@ -79,6 +71,9 @@ export default function Login({ setCookie }) {
         <div className="flex justify-between items-center mb-6">
           <a href="#" className="text-sm text-blue-600 hover:underline">
             Mot de passe oublié ?
+          </a>
+          <a href="/register" className="text-sm text-blue-600 hover:underline">
+            Pas de compte ? Inscrivez-vous
           </a>
         </div>
 
