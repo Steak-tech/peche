@@ -20,6 +20,7 @@ export default function Layout({ cookies, removeCookie }) {
         if (!isAuthenticated) {
           navigate("/login");
         } else {
+          navigate("/");
           setOpenModal(true);
         }
       },
