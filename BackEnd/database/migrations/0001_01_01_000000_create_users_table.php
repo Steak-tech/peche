@@ -20,11 +20,11 @@ return new class extends Migration {
             $table->string('username');
             $table->string('departement')->nullable();
             $table->string('peche_type')->nullable();
-            $table->integer('xp')->nullable();
-            $table->integer('level')->nullable();
+            $table->integer('xp')->default(0);
+            $table->integer('level')->default(0);
             $table->enum('role', ['admin', 'scientifique', 'pecheur'])->default('pecheur');
-            $table->boolean('consent')->nullable();
-            $table->boolean('notifications')->nullable();
+            $table->boolean('consent')->default(false);
+            $table->boolean('notifications')->default(false);
             $table->timestamps();
         });
 
