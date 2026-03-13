@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { FaGoogle } from "react-icons/fa";
 
 export default function Login() {
   const { login } = useAuth();
@@ -35,7 +36,7 @@ export default function Login() {
 
       <form
         onSubmit={handleSubmit}
-        className="max-w-md mx-auto mt-8 p-6 bg-white rounded shadow-md w-full"
+        className="max-w-md mx-auto mt-8 p-6 rounded  w-full"
       >
         {/* Affichage des erreurs */}
         {error && (
@@ -45,11 +46,11 @@ export default function Login() {
         )}
 
         <label className="block mb-4">
-          <p className="text-gray-700 font-semibold mb-1">Email</p>
+          <p className="text-gray-700 p-2 font-light mb-1">Email</p>
           <input
             type="email"
             required
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full p-2 rounded-2xl border border-[#434DAB]/50"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="votre@email.com"
@@ -57,37 +58,50 @@ export default function Login() {
         </label>
 
         <label className="block mb-4">
-          <p className="text-gray-700 font-semibold mb-1">Mot de passe</p>
+          <p className="text-gray-700 p-2 font-light mb-1">Mot de passe</p>
           <input
             type="password"
             required
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full p-2 rounded-2xl border border-[#434DAB]/50"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
           />
         </label>
 
-        <div className="flex justify-between items-center mb-6">
-          <a href="#" className="text-sm text-blue-600 hover:underline">
+        <div className="flex justify-end items-center mb-6">
+          <a href="#" className="text-sm text-gray-700 font-light hover:underline">
             Mot de passe oublié ?
-          </a>
-          <a href="/register" className="text-sm text-blue-600 hover:underline">
-            Pas de compte ? Inscrivez-vous
           </a>
         </div>
 
+        <div className="text-center mb-4 py-6 pt-6">
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-2 px-4 rounded text-white font-bold transition duration-200 ${
+          className={`w-full py-2 px-4 rounded text-white font-light rounded-2xl transition duration-200 ${
             loading
-              ? "bg-blue-400 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700"
+              ? "bg-[#434DAB] cursor-not-allowed"
+              : "bg-[#434DAB] hover:bg-[#3a449c]"
           }`}
         >
           {loading ? "Connexion en cours..." : "Se connecter"}
         </button>
+        </div>
+
+        <div className="flex justify-center items-center mb-6">
+          <a href="#" className="inline-flex items-center gap-2 text-normal text-gray-700 font-light hover:underline">
+            Se connecter avec Google <FaGoogle/>
+          </a>
+        </div>
+
+        <div className="flex justify-center items-center mb-6">
+          <p className="text-sm text-gray-700 p-2 font-light mb-1">Pas encore de compte ?</p><a href="#" className="text-sm text-gray-700 font-semibold hover:underline mb-1">
+            S'inscrire
+          </a>
+        </div>
+
+
       </form>
     </div>
   );
